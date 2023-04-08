@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>juste_prix</title>
+    <!--<script src="../tp4/ex1.js"></script>
+    <script src="../tp4/ex2.js"></script>-->
+</head>
+<body>
+    <p id="resultat"></p>
+    <p>5 meilleur score:</p>
+    <div id="score">
+
+    </div>
+      <script>
+            alert("Bonjour, vous devez trouver un nombre entre un intervalle que vous choisissez");
+            let minI =parseInt(prompt("intervalle minimal :"));
+            let maxI =parseInt(prompt("intervalle maximal :"));
+            let scores = [];
+            if (isNaN(minI) || isNaN(maxI)) {
+                alert("error 404!");
+            }else {
+
+                function nbAlea(min, max) {
+                    let nb = min + (max - min + 1) * Math.random();
+                    return Math.floor(nb);
+                }
+
+                function verif(n) {
+                    for (i = 0; i <= 10; i++) {
+                        let nombre =prompt("devinez le nombre :( q si vous voulez terminer )");
+                            if (nombre == "q") {
+                                alert("la partie est terminer.");
+                                return null;
+                            } else if(isNaN(parseInt(nombre))) {
+                                alert("sÃ©rieux !?(ok tu perd une tentative)");
+                            }else{
+                                if (n == nombre) {
+                                    alert("tu as rÃ©ussi!");
+                                    let nom = prompt("entre ton nom:");
+                                    document.getElementById("resultat").innerHTML +=nom +" a fait " + i + " erreur pour trouver " + n +"<br />";
+                                    return {nom:nom, erreur:i, intermax:maxI, intermin:minI, nbrcher:n, trouver:true };
+                                }
+                                if (n < nombre) {
+                                    alert("trop grand!");
+                                } else {
+                                    alert("trop petit!");
+                                }
+                            }
+                    }
+                    document.getElementById("resultat").innerHTML += "vous n'avez pas trouver " + n +"<br />";
+                    return { nom:nom, erreur:i, intermax:maxI, intermin:minI, nbrcher:n , trouver:false };
+            }
+            // verifier nouveau score != null
+                // si diffrente null ajouter dans le tableau recu en paramÃ¨tre
+                // sort tab
+                // sublist 5 premier element max
+                function addScore(tab, score) {
+                    if (score == null) {
+                        return tab;
+                    }
+
+                    tab.push(score);
+                    tab.sort(function (a, b) {
+                        return b.erreur - a.erreur;
+                    });
+
+                    return tab.slice(0, 5);
+                }
+
+            let rep= "y";
+
+            while( rep=="y") {
+                let N = nbAlea(minI, maxI);
+                scores = addScore(scores, verif(N));
+                console.log(scores);
+                var htmlScore = "<ul>";
+                for (let i = 0; i < scores.length; i++) {
+                    htmlScore += "<li>" + scores[i].nom + " avec " + scores[i].erreur + "</li>";
+                }
+                document.getElementById("score").innerHTML = htmlScore + "</ul>";
+                rep = prompt("vous voulez recommencer avec le mÃªme intervale pour faire un meilleur score ?(y pour oui et n pour non)");
+            }
+        }
+      </script>
+
+</body>
+</html>

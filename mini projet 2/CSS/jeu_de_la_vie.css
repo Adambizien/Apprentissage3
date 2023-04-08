@@ -1,0 +1,10 @@
+table{
+    text-align: center;
+}
+td{
+    height: 0.5cm;
+    width: 0.5cm;
+}
+.vivant{
+    background-color: aqua;
+}

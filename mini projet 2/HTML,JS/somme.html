@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+        <title> Somme en JavaScript</title>
+        <meta charset ="utf-8" />
+        <!-- balise de script -->
+        <script>
+            // dÃ©finition d'une fonction somme
+            function somme(N) {
+                var sum = 0;
+                for (n=1; n<=N; n++) {
+                    sum = sum + n ;
+                    // Ã©criture d'une chaÃ®ne de caractÃ¨res dans le document courant
+                    document.getElementById("calcul").innerHTML += "Pour n = " + n + ", somme = "+sum+"<br />";
+                }
+            return sum;
+            }
+        </script>
+    </head>
+
+    <body>
+		<p id="calcul"></p>
+		<p id="somme"></p>
+        <script>
+            // boÃ®te de dialogue avec la fonction prompt
+            var nombre = parseInt(prompt("Somme jusqu'a ?", 10));
+            document.getElementById("somme").innerHTML += "Somme = " + somme(nombre);
+        </script>
+
+    </body>
+
+</html>
+

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>jeu_de_la_vie</title>
+    <link rel="stylesheet" href="../CSS/jeu_de_la_vie.css"/>
+</head>
+<body>
+<div id="jeudelavie"></div>
+
+<script>
+
+    function jeudelavie(n) {
+        var self = this;
+        this.jeuVie= null;
+        __construct();
+
+        // method public
+        this.creerTabDansId = function (id) {
+            let table = "<table id='"+id+"'>";
+            for (let i = 0 ; i<self.jeuVie.length;i++) {
+                //tr
+                table +="<tr>";
+                for (let j = 0; j < self.jeuVie[i].length; j++) {
+                    if(self.jeuVie[i][j]) {
+                        table += "<td class='vivant'></td>";
+                    }else {
+                        table += "<td></td>";
+                    }
+                }
+                table +="</tr>";
+            //tr
+            }
+            document.getElementById("jeudelavie").innerHTML = table +"</table>";
+        };
+
+        this.voisinsVivants=function (x,y){
+            let sum = 0;
+
+            for (let i = x-1; i <= x + 1; i++) {
+                if (i < 0 || i >= self.jeuVie.length) {
+                    continue;
+                }
+                for (let j = y - 1; j <= y + 1; j++) {
+                    if ((x == i && y == j) || j < 0  || j >= self.jeuVie[i].length) {
+                        continue; // next turn
+                    }
+                    sum += self.jeuVie[i][j] ? 1 : 0;
+                }
+            }
+
+            return sum;
+        };
+
+        this.oneTurn=function(){
+            for(let i=0 ; i < self.jeuVie.length ; i++){
+               for(let j=0 ;j < self.jeuVie[i].length ; j++){
+                   let nombreVoisinVivant = self.voisinsVivants(i,j);
+                   self.jeuVie[i][j] = nombreVoisinVivant == 2 || nombreVoisinVivant == 3;
+
+                }
+            }
+        }
+
+        this.unTour=function(){
+            self.oneTurn();
+            self.creerTabDansId("s");
+        }
+
+
+        //constructeur
+        function __construct() {
+            self.jeuVie = new Array(n);
+
+            for (let i = 0 ; i<self.jeuVie.length;i++) {
+                self.jeuVie[i] = new Array(n).fill(false);
+                for(let j= 0;j<self.jeuVie[i].length;j++){
+                    self.jeuVie[i][j] = Math.random() > 0.5;
+                }
+            }
+        }
+    }
+    let jeu = new jeudelavie(100);
+    jeu.creerTabDansId("s");
+    //console.log(jeu.voisinsVivants(0,0));
+    setInterval(jeu.unTour,500);
+
+</script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>la_table_de_multiplication</title>
+    <script>
+        // dÃ©finition d'une fonction table
+        function table(N) {
+            for (n=0; n<=10; n++) {
+                mult = N * n ;
+                // Ã©criture d'une chaÃ®ne de caractÃ¨res dans le document courant
+                document.getElementById("calcul").innerHTML +=  n + "&times"+ N +"=" + mult + "<br />";
+            }
+            return mult;
+        }
+    </script>
+</head>
+<body>
+    <p id="calcul"></p>
+    <script>
+        // boÃ®te de dialogue avec la fonction prompt
+        let nombre = parseInt(prompt("choisissez un nombre pour la table de multiplication?",5));
+
+        table(nombre);
+    </script>
+</body>
+</html>
