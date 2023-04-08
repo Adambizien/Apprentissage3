@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>deltadate</title>
+    <script src="http://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <script>
+            //les prototype :
+            Number.prototype.isBi = function () {
+                return (((this % 4) == 0) && ((this % 100 != 0) || (this % 400 == 0)));
+            };
+            Number.prototype.isInInter = function (min, max) {
+                return min <= this && this <= max;
+            };
+            Date.prototype.setDateFromString = function (s) {
+                if(isDate(s)){
+                    let m =this.setMonth(parseInt(s.substr(3,5)));
+                    let a =this.setFullYear(parseInt(s.substr(6)));
+                    let j =this.setDate(parseInt(s.substr(0,2)));
+                    return true;
+                }else{
+                    alert("une erreur s'est produit! (votre date n'est pas conforme!)");
+                    return false;
+                }
+            };
+            //les fonctions :
+            function nbJours(m, a) {
+                if (m == 2) {
+                    if (a.isBi()) {
+                        return 29;
+                    } else {
+                        return 28;
+                    }
+                } else if (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12) {
+                    return 31;
+                } else {
+                    return 30;
+                }
+            }
+
+            function twoINT(n) {
+                chaine = "";
+                if (n>=0 && n <= 9) {
+                    chaine = "0" + n;
+                }
+                if (n>=10 && n <= 99) {
+                    chaine = n;
+                }
+                return chaine;
+            }
+
+            function todayDate() {
+                let date = new Date();
+                    return twoINT(date.getDate())+"/"+twoINT(date.getMonth()+1)+"/"+date.getFullYear();
+            }
+            function isDate(s){
+                dateRegex = /^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/;
+                if(dateRegex.test(s)){
+                    let mois =parseInt(s.substr(3,5));
+                    let annee = parseInt(s.substr(6));
+                    if(mois.isInInter(1,12)){
+                        let nbJ = nbJours(mois,annee);
+                        let jour = parseInt(s.substr(0,2));
+                        return jour.isInInter(1,nbJ);
+                    }else{
+                        return false;
+                    }
+                }else{
+                    return false;
+                }
+            }
+
+        //le formulaire en jquery :
+        $('body').html('<fieldset></fieldset>');
+
+        let fieldset = $('fieldset');
+
+
+        fieldset.prepend('<legend>Delta entre deux dates</legend>');
+        fieldset.prepend('<label for="date1" >Date 1: </label>');
+        $('label[for="date1"]').after('<input type="text" name="date1" id="date1" value="11/11/1111"/>');
+        let dateone =$('#date1');
+        dateone.after('<input type="submit" value="Maintenant"/>');
+        fieldset.append("</br>");
+        fieldset.append("</br>");
+        fieldset.append('<label for="date2" >Date 2: </label>');
+        $('label[for="date2"]').after('<input type="text" name="date2" id="date2" value="12/12/1212"/>');
+        let datetwo =$('#date2');
+        datetwo.after('<input type="submit" value="Maintenant"/>');
+        fieldset.after('<input type="submit" value="submit"/>');
+        fieldset.css({'height':'85px','width':'400px','position':'absolute','left':'250px'});
+        // le bouton submit:
+        $('input[value=submit]').css({'position':'relative','left':'515px','top':'120px'}).click(function(){
+            let date1 = dateone.val();
+            let date2 = datetwo.val();
+            let d1 = new Date();
+            let d2 = new Date();
+            d1.setDateFromString(date1);
+            d2.setDateFromString(date2);
+            millis = d2.getTime()-d1.getTime();
+            alert("Delta : "+ millis/86400000+" jour(s)");
+
+        });
+        //les boutons maintenant  :
+        $('input[value=Maintenant]:first').click(function(){
+            dateone.val(todayDate());
+        });
+        $('input[value=Maintenant]:last').click(function(){
+            datetwo.val(todayDate());
+        });
+    </script>
+</body>
+</html>
+
+
+
+

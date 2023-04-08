@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horloge_Dynamique</title>
+    <link href="../CSS/horloge.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id="Stop">
+    <div id="Local"></div>
+    <div id="UTC"></div>
+    </div>
+    <script>
+        function Horloge(h,m,s){
+            //attributs:
+            this.hours = h;
+            this.minutes = m;
+            this.seconds = s;
+            let self = this;
+
+            //mÃÂ©thodes:
+            this.inc = function(){
+                if(self.seconds < 59) {
+                    self.seconds += 1;
+                }else if(self.minutes < 59){
+                    self.minutes += 1;
+                    self.seconds = 0;
+                }else if(self.hours < 23){
+                    self.hours += 1;
+                    self.minutes = 0;
+                }else{
+                    self.hours=0;
+                }
+            }
+        }
+
+        function updateHorloge(mainId, horloge) {
+            horloge.inc();
+            mainId.find('.hours').text(horloge.hours);
+            mainId.find('.minutes').text(horloge.minutes);
+            mainId.find('.seconds').text(horloge.seconds);
+        }
+
+        function insertHorlogeDsDiv(id){
+            let obj_date = new Date();
+            let h = obj_date.getHours();
+            let m = obj_date.getMinutes();
+            let s = obj_date.getSeconds();
+            let hUTC = obj_date.getUTCHours();
+            let mUTC = obj_date.getUTCMinutes();
+            let sUTC = obj_date.getSeconds();
+
+            let HMS = new Horloge(h,m,s);
+            let HMSUTC = new Horloge(hUTC,mUTC,sUTC);
+
+            let id_Local = $('#Local')
+            id_Local.append('<table><tr><th colspan="3">Heure Local :</th></tr></table>');
+            let id_table = $('#Local >  table ');
+            id_table.append('<tr><td class="hours">'+HMS.hours+'</td><td class="minutes">'+HMS.minutes+'</td><td class="seconds">'+HMS.seconds+'</td></tr>');
+
+            let id_UTC =$('#UTC')
+            id_UTC.append('<table><tr><th colspan="3">Heure UTC :</th></tr></table>');
+            let id_table_utc = $('#UTC >  table ');
+            id_table_utc.append('<tr><td class="hours">'+HMSUTC.hours+'</td><td class="minutes">'+HMSUTC.minutes+'</td><td class="seconds">'+HMSUTC.seconds+'</td></tr>');
+
+            let setinter = setInterval(function() { updateHorloge(id_Local, HMS); updateHorloge(id_UTC, HMSUTC); }, 1000);
+
+            let stop = false;
+            let val_stop = $('#Stop');
+            val_stop.click(function(){
+                if (stop) {
+                    // TODO
+                    val_stop.css("background","gray");
+                    obj_date = new Date();
+                    h = obj_date.getHours();
+                    m = obj_date.getMinutes();
+                    s = obj_date.getSeconds();
+                    hUTC = obj_date.getUTCHours();
+                    mUTC = obj_date.getUTCMinutes();
+                    sUTC = obj_date.getSeconds();
+                    HMS = new Horloge(h,m,s);
+                    HMSUTC = new Horloge(hUTC,mUTC,sUTC);
+                    updateHorloge(id_Local, HMS); updateHorloge(id_UTC, HMSUTC);
+                    setinter = setInterval(function() { updateHorloge(id_Local, HMS); updateHorloge(id_UTC, HMSUTC); }, 1000);
+                    stop = false;
+                } else {
+                    val_stop.css("background","red");
+                    clearInterval(setinter);
+                    stop = true;
+                }
+            });
+        }
+        insertHorlogeDsDiv("Stop");
+
+    </script>
+</body>
+</html>
+

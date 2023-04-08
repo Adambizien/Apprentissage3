@@ -1,0 +1,16 @@
+#Stop{
+    background-color: gray;
+    height: 100px;
+    width: 250px;
+    text-align: center;
+    padding: 20px;
+    color: white;
+    border: solid black 3px;
+    border-radius: 20px;
+}
+table {
+    width : 100%;
+}
+td{
+    border: solid white 3px ;
+}
